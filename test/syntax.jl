@@ -1764,3 +1764,14 @@ let x = 0
     @test (a=1, b=2, c=(x=3)) == (a=1, b=2, c=3)
     @test x == 3
 end
+
+function captured_and_shadowed_sp(x::T) where T
+    function g()
+        (T,
+         let T = 0
+             T
+         end)
+    end
+    g()
+end
+@test captured_and_shadowed_sp(1) === (Int, 0)
